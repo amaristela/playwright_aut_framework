@@ -1,6 +1,6 @@
 import {expect, type Locator, type Page} from '@playwright/test';
 
-export class ParabankLoginPage {
+export class LoginPage {
     readonly page : Page;
     readonly username : Locator;
     readonly password : Locator;

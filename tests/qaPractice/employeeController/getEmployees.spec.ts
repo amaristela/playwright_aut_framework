@@ -1,35 +1,29 @@
 import { test, expect } from '@playwright/test'
-import { z } from 'zod'
 import { server } from '../../../utils/mock/server'
+import { getRequest } from '../../../utils/api/apiHelper'
 import { http, HttpResponse } from 'msw'
+import { getEmployeesSchema } from '../../../utils/api/apiSchema'
+import { z } from 'zod'
 
-const getEmployeesSchema = z.object({
-    id: z.number(),
-    firstName: z.string(),
-    lastName: z.string(),
-    dob: z.string(),
-    email: z.string(),
-})
+test.describe('Get /v1/employees - Successful Response', () => {
+    let apiResponse: { status: number; body: any; ok: boolean }
 
-const getEmployeeSchemaList = z.array(getEmployeesSchema)
-
-test('GET /v1/employees - Success', async ({ request }) => {
-    const response = await request.get('http://localhost:8887/api/v1/employees', {
-        headers: {
-            accept: '*/*',
-        },
+    test.beforeEach(async ({ request }) => {
+        apiResponse = await getRequest(request, 'http://localhost:8887/api/v1/employees')
     })
 
-    const result = getEmployeeSchemaList.safeParse(await response.json())
+    test('GET /v1/employees - Success Respone', async () => {
+        expect(apiResponse.status).toBe(200)
+    })
 
-    expect(response.status()).toBe(200)
-
-    if (!result.success) {
-        console.error('Schema Validation Error: ', result.error.message.toString())
-    }
-
-    expect(result.success).toBe(true)
-    console.log(result)
+    test('GET /v1/employees - Validate Schema', async () => {
+        const getEmployeeSchemaList = z.array(getEmployeesSchema)
+        const result = getEmployeeSchemaList.safeParse(apiResponse.body)
+        if (!result.success) {
+            console.error('Schema Validation Error: ', result.error.message.toString())
+        }
+        expect(result).toBeTruthy()
+    })
 })
 
 test.describe('Get /v1/employees - Unsuccesful Responses', () => {
@@ -37,11 +31,11 @@ test.describe('Get /v1/employees - Unsuccesful Responses', () => {
     test.afterEach(() => server.resetHandlers())
     test.afterAll(() => server.close)
 
-    // Unauthorized 401
+    // Unauthorized - 401
     test('GET /v1/employees - Unauthorized', async ({ request }) => {
         server.use(
             http.get('http://localhost:8887/api/v1/employees', () => {
-                return HttpResponse.json({ data: '' }, { status: 401 })
+                return HttpResponse.json({ data: 'Unauthorized' }, { status: 401 })
             })
         )
         const response = await request.get('http://localhost:8887/api/v1/employees')
@@ -52,14 +46,14 @@ test.describe('Get /v1/employees - Unsuccesful Responses', () => {
     test('GET /v1/employees - Forbidden', async ({ request }) => {
         server.use(
             http.get('http://localhost:8887/api/v1/employees', () => {
-                return HttpResponse.json({ data: '' }, { status: 403 })
+                return HttpResponse.json({ data: 'Forbidden' }, { status: 403 })
             })
         )
         const response = await request.get('http://localhost:8887/api/v1/employees')
         expect(response.status()).toBe(403)
     })
 
-    // Internal Server Error
+    // Internal Server Error - 500
     test('GET /v1/employees - Internal Server Error', async ({ request }) => {
         server.use(
             http.get('http://localhost:8887/api/v1/employees', () => {
@@ -70,7 +64,7 @@ test.describe('Get /v1/employees - Unsuccesful Responses', () => {
         expect(response.status()).toBe(500)
     })
 
-    // Not Found
+    // Not Found - 404
     test('GET /v1/employees - Not Found', async ({ request }) => {
         server.use(
             http.get('http://localhost:8887/api/v1/employees', () => {

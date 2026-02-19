@@ -40,4 +40,4 @@ Once the environment is set up and the Docker container is active, you can run y
 
 # 📊 Sample Recording
 
-<video src="example/Sample Recording.mov" width="1020" height="640" controls></video>
+<video src="example/Sample Recording.mov" width="1020" height="740" controls></video>

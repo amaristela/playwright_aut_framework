@@ -40,4 +40,4 @@ Once the environment is set up and the Docker container is active, you can run y
 
 # 📊 Sample Recording
 
-![](https://github.com/user-attachments/assets/1daa25c7-1f97-47ad-84ff-a90bbb7bb2d2)
+https://github.com/user-attachments/assets/1daa25c7-1f97-47ad-84ff-a90bbb7bb2d2

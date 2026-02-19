@@ -40,4 +40,4 @@ Once the environment is set up and the Docker container is active, you can run y
 
 # 📊 Sample Recording
 
-<video src="example/Sample Recording.mov" width="1020" height="740" controls></video>
+<video src="https://github.com/amaristela/playwright_aut_framework/blob/4b398c1ac9ea034e214b195bf263372778ab157a/example/Sample%20Recording.mov" width="1020" height="740" controls></video>

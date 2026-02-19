@@ -31,9 +31,13 @@ If you do not have Docker installed:
 
 Follow the instruction in this website to run QA Practice APIs https://qa-practice.razvanvancea.ro/api-testing.html
 
-# 🧪 3. Executing Tests
+# 🧪 Executing Tests
 
 Once the environment is set up and the Docker container is active, you can run your tests:
 
 1. UI Mode: `npx playwright test /tests/qaPractice/employeeController --ui`
 2. Headless Mode: `npx playwright test /tests/qaPractice/employeeController`
+
+# 📊 Sample Recording
+
+<video src="example/Sample Recording.mov" width="1020" height="640" controls></video>
